@@ -171,9 +171,9 @@ Game.prototype = {
     updatePhysics() { // GAME PHYSICS
 
         // Move ship by updating position in ship object
-        this.shipGraphics.x = this.shipGraphics.position[0];
-        this.shipGraphics.y = this.shipGraphics.position[1];
-        this.shipGraphics.rotation = this.shipGraphics.angle;
+        this.shipGraphics.x = this.ship.position[0];
+        this.shipGraphics.y = this.ship.position[1];
+        this.shipGraphics.rotation = this.ship.angle;
 
         // Step the physics simulation forward
         this.world.step(1 / 60);
