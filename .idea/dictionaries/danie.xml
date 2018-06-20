@@ -5,6 +5,7 @@
       <w>keycode</w>
       <w>keydown</w>
       <w>keyup</w>
+      <w>teleporting</w>
     </words>
   </dictionary>
 </component>

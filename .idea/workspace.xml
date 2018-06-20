@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="46fb20c8-00ff-4c06-b311-279df96b3d7d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/danie.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/danie.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/game.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,8 +18,8 @@
           <file leaf-file-name="game.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/game.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="598">
-                  <caret line="213" column="43" selection-start-line="213" selection-start-column="43" selection-end-line="213" selection-end-column="43" />
+                <state relative-caret-position="483">
+                  <caret line="231" column="49" selection-start-line="231" selection-start-column="49" selection-end-line="231" selection-end-column="49" />
                   <folding>
                     <element signature="e#1083#1773#0" />
                     <element signature="e#1857#2312#0" />
@@ -164,7 +163,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16525000" />
+    <option name="totallyTimeSpent" value="17250000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -250,8 +249,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/game.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
-          <caret line="213" column="43" selection-start-line="213" selection-start-column="43" selection-end-line="213" selection-end-column="43" />
+        <state relative-caret-position="483">
+          <caret line="231" column="49" selection-start-line="231" selection-start-column="49" selection-end-line="231" selection-end-column="49" />
           <folding>
             <element signature="e#1083#1773#0" />
             <element signature="e#1857#2312#0" />

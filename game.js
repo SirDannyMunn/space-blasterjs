@@ -17,7 +17,7 @@ let Game = function() {
     });
 
     // Speed parameters for the ship
-    this.speed = 100;
+    this.speed = 300;
     this.turnSpeed = 2;
 
     // Setup keyboard event listeners
@@ -212,7 +212,6 @@ Game.prototype = {
         // Move the ship by updating the "force vector" in the ship's physics object
         if (this.keyUp) {
             const angle = this.ship.angle + Math.PI / 2;
-            console.log(angle);
             this.ship.force[0] -= this.speed * Math.cos(angle);
             this.ship.force[1] -= this.speed * Math.sin(angle);
         }
@@ -221,6 +220,16 @@ Game.prototype = {
         this.shipGraphics.x = this.ship.position[0];
         this.shipGraphics.y = this.ship.position[1];
         this.shipGraphics.rotation = this.ship.angle;
+
+        // Boundaries teleporting
+        if (this.ship.position[0] > this._width)
+            this.ship.position[0] = 0;
+        if (this.ship.position[0] < 0)
+            this.ship.position[0] = this._width;
+        if (this.ship.position[1] > this._height)
+            this.ship.position[1] = 0;
+        if (this.ship.position[1] < 0)
+            this.ship.position[1] = this._height;
 
         // Step the physics simulation forward
         this.world.step(1 / 60);
