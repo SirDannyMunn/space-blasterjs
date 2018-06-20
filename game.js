@@ -121,8 +121,10 @@ Game.prototype = {
         this.ship.endFill();
 
         // position the ship in the middle of the screen
+/*
         this.ship.x = Math.round(this._width / 2);
         this.ship.y = Math.round(this._height / 2);
+*/
 
         // Add the ship to the stage
         this.stage.addChild(this.ship);
@@ -168,13 +170,13 @@ Game.prototype = {
 
     updatePhysics() { // GAME PHYSICS
 
-        // Update the position of the graphics based on the physics of the physics simulation position
-        // this.ship.x = this.ship.position[0];
-        // this.ship.y = this.ship.position[1];
-        // this.ship.rotation = this.ship.angle;
+        // Move ship by updating position in ship object
+        this.ship.x = this.ship.position[0];
+        this.ship.y = this.ship.position[1];
+        this.ship.rotation = this.ship.angle;
 
         // Step the physics simulation forward
-        // this.world.step(1 / 60);
+        this.world.step(1 / 60);
     },
 
     /*
