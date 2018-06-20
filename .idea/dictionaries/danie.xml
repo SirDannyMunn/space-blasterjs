@@ -3,6 +3,8 @@
     <words>
       <w>gameloop</w>
       <w>keycode</w>
+      <w>keydown</w>
+      <w>keyup</w>
     </words>
   </dictionary>
 </component>

@@ -101,7 +101,7 @@ Game.prototype = {
     */
     createShip() {  // SHIP
 
-        // Create a new ship object
+        // Physics for the ship object
         this.ship = new p2.Body({
             mass: 1,
             angularVelocity: 0,
@@ -192,7 +192,7 @@ Game.prototype = {
             case 68: // D
                 this.keyRight = state;
                 break;
-            case 87: //W
+            case 87: // W
                 this.keyUp = state;
                 break;
         }
@@ -200,7 +200,7 @@ Game.prototype = {
 
     updatePhysics() { // GAME PHYSICS
 
-        // Move the ship by updating the "angular velocity" in the physics object
+        // Rotate the ship by updating the "angular velocity" in the physics object
         if (this.keyLeft) {
             this.ship.angularVelocity = this.turnSpeed * -1;
         } else if (this.keyRight) {
@@ -209,7 +209,15 @@ Game.prototype = {
             this.ship.angularVelocity = 0;
         }
 
-        // Move ship by updating position in ship object
+        // Move the ship by updating the "force vector" in the ship's physics object
+        if (this.keyUp) {
+            const angle = this.ship.angle + Math.PI / 2;
+            console.log(angle);
+            this.ship.force[0] -= this.speed * Math.cos(angle);
+            this.ship.force[1] -= this.speed * Math.sin(angle);
+        }
+
+        // Move ship graphic by updating it's coordinates to the position in the ship object
         this.shipGraphics.x = this.ship.position[0];
         this.shipGraphics.y = this.ship.position[1];
         this.shipGraphics.rotation = this.ship.angle;
