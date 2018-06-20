@@ -12,13 +12,13 @@ let Game = function() {
     this.stage = new PIXI.Stage();
 
     // Setup out physics world simulation
-    // this.world = new p2.World({
-    //     gravity: [0, 0]
-    // });
+    this.world = new p2.World({
+        gravity: [0, 0]
+    });
 
     // Speed parameters for the ship
-    // this.speed = 100;
-    // this.turnSpeed = 2;
+    this.speed = 100;
+    this.turnSpeed = 2;
 
     // Start running the Game
     this.build();
