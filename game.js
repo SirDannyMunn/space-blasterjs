@@ -128,45 +128,43 @@ Game.prototype = {
         this.stage.addChild(this.ship);
 
         // Event listeners for ship
-        Mousetrap.bind('w', function() {
-           this.ship.rotation = 0; // rotate ship (convert to degrees)
-           this.moveShip('n');
-        }.bind(this));
-        Mousetrap.bind('s', function() {
-            this.ship.rotation = 180 * (Math.PI / 180); // rotate ship (convert to degrees)
-           this.moveShip('s');
-        }.bind(this));
-        Mousetrap.bind('d', function() {
-            this.ship.rotation = 90 * (Math.PI / 180); // rotate ship (convert to degrees)
-            this.moveShip('e');
-        }.bind(this));
-        Mousetrap.bind('a', function() {
-            this.ship.rotation = 270 * (Math.PI / 180); // rotate ship (convert to degrees)
-            this.moveShip('w');
-        }.bind(this));
+        // this.shipEventListeners();
     },
 
-    moveShip(direction) { // SHIP MOVEMENT
+    // shipEventListeners() {
+    //     Mousetrap.bind('w', function() {
+    //         // this.ship.rotation = 0; // rotate ship (convert to degrees)
+    //         this.moveShip('n');
+    //     }.bind(this));
+    //     Mousetrap.bind('s', function() {
+    //         // this.ship.rotation = 180 * (Math.PI / 180); // rotate ship (convert to degrees)
+    //         this.moveShip('s');
+    //     }.bind(this));
+    //     Mousetrap.bind('d', function() {
+    //         // this.ship.rotation = 90 * (Math.PI / 180); // rotate ship (convert to degrees)
+    //         this.moveShip('e');
+    //     }.bind(this));
+    //     Mousetrap.bind('a', function() {
+    //         // this.ship.rotation = 270 * (Math.PI / 180); // rotate ship (convert to degrees)
+    //         this.moveShip('w');
+    //     }.bind(this));
+    // },
 
-        // Distance to move the ship
-        const speed = 10;
-        
-        console.log(this.ship.x);
-        console.log(this.ship.y);
-
-        // Move ship in the desired direction by simply changing it's coordinates by the speed amount
-        if (direction === 'n')
-            this.ship.y -= speed;
-        if (direction === 'e')
-            this.ship.x += speed;
-        if (direction === 's')
-            this.ship.y += speed;
-        if (direction === 'w')
-            this.ship.x -= speed;
-
-        console.log(this.ship.x);
-        console.log(this.ship.y);
-    },
+    // moveShip(direction) { // SHIP MOVEMENT
+    //
+    //     // Distance to move the ship
+    //     const speed = 10;
+    //
+    //     // Move ship in the desired direction by simply changing it's coordinates by the speed amount
+    //     if (direction === 'n')
+    //         this.ship.y -= speed;
+    //     if (direction === 'e')
+    //         this.ship.x += speed;
+    //     if (direction === 's')
+    //         this.ship.y += speed;
+    //     if (direction === 'w')
+    //         this.ship.x -= speed;
+    // },
 
     updatePhysics() { // GAME PHYSICS
 
