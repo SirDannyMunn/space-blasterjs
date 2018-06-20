@@ -91,19 +91,19 @@ Game.prototype = {
     createShip() {  // SHIP
 
         // Create a new ship object
-        // this.ship = new p2.Body({
-        //     mass: 1,
-        //     angularVelocity: 0,
-        //     damping: 0,
-        //     angularDamping: 0,
-        //     position: [
-        //         Math.round(this._width / 2),
-        //         Math.round(this._height / 2)
-        //     ]
-        // });
-        // this.shipShape = new p2.Rectangle(52, 69);
-        // this.ship.addShape(this.shipShape);
-        // this.world.addBody(this.ship);
+        this.ship = new p2.Body({
+            mass: 1,
+            angularVelocity: 0,
+            damping: 0,
+            angularDamping: 0,
+            position: [
+                Math.round(this._width / 2),
+                Math.round(this._height / 2)
+            ]
+        });
+        this.shipShape = new p2.Rectangle(52, 69);
+        this.ship.addShape(this.shipShape);
+        this.world.addBody(this.ship);
 
         // Initialise PIXI instance for the ship
         this.ship = new PIXI.Graphics();
