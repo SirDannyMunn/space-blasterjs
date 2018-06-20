@@ -18,12 +18,11 @@
           <file leaf-file-name="game.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/game.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="483">
-                  <caret line="231" column="49" selection-start-line="231" selection-start-column="49" selection-end-line="231" selection-end-column="49" />
+                <state relative-caret-position="-3561">
+                  <caret line="123" column="25" selection-start-line="123" selection-start-column="25" selection-end-line="123" selection-end-column="25" />
                   <folding>
                     <element signature="e#1083#1773#0" />
                     <element signature="e#1857#2312#0" />
-                    <element signature="e#2332#4110#0" />
                     <element signature="e#3646#3671#0" />
                     <element signature="e#4477#4518#0" />
                   </folding>
@@ -56,8 +55,14 @@
           <file leaf-file-name="game.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/game.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="26">
-                  <caret line="103" column="38" selection-start-line="103" selection-start-column="38" selection-end-line="103" selection-end-column="38" />
+                <state relative-caret-position="5174">
+                  <caret line="287" column="61" selection-start-line="287" selection-start-column="61" selection-end-line="287" selection-end-column="61" />
+                  <folding>
+                    <element signature="e#2685#4047#0" />
+                    <element signature="e#4054#4079#0" />
+                    <element signature="e#4918#4959#0" />
+                    <element signature="e#5569#5918#0" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -163,7 +168,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17250000" />
+    <option name="totallyTimeSpent" value="19914000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -219,7 +224,6 @@
           <folding>
             <element signature="e#1083#1773#0" />
             <element signature="e#1857#2312#0" />
-            <element signature="e#2332#4110#0" />
             <element signature="e#3646#3671#0" />
             <element signature="e#4477#4518#0" />
           </folding>
@@ -249,12 +253,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/game.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="231" column="49" selection-start-line="231" selection-start-column="49" selection-end-line="231" selection-end-column="49" />
+        <state relative-caret-position="-3561">
+          <caret line="123" column="25" selection-start-line="123" selection-start-column="25" selection-end-line="123" selection-end-column="25" />
           <folding>
             <element signature="e#1083#1773#0" />
             <element signature="e#1857#2312#0" />
-            <element signature="e#2332#4110#0" />
             <element signature="e#3646#3671#0" />
             <element signature="e#4477#4518#0" />
           </folding>

@@ -28,6 +28,10 @@ let Game = function() {
         this.handleKeys(event.keyCode, false);
     }.bind(this), false);
 
+    // Initialise enemy arrays
+    this.enemyBodies = [];
+    this.enemyGraphics = [];
+
     // Start running the Game
     this.build();
 };
@@ -47,6 +51,9 @@ Game.prototype = {
 
         // Draw the ship to the scene
         this.createShip();
+
+        // Create random enemies
+        this.createEnemies();
 
         // Begin the first frame
         requestAnimationFrame(this.tick.bind(this));
@@ -94,6 +101,53 @@ Game.prototype = {
 
         // Attach the walls to the stage
         this.stage.addChild(walls);
+    },
+
+    /*
+    * Create enemies to fight against
+    */
+    createEnemies() {
+
+        // Create random interval to generate new enemies
+        this.enemyTimer = setInterval(function () {
+
+            // Random physics properties for enemy ships
+            const x = Math.round(Math.random() * this._width);
+            const y = Math.round(Math.random() * this._height);
+            const vx = (Math.random() - 0.5) * this.speed;
+            const vy = (Math.random() - 0.5) * this.speed;
+            const va = (Math.random() - 0.5) * this.speed;
+
+            // Create the enemies physics body
+            let enemy = new p2.Body({
+                position: [x, y],
+                mass: 0.5,
+                damping: 0,
+                angularDamping: 0,
+                velocity: [vx, vy],
+                angularVelocity: va
+            });
+
+            const enemyShape = new p2.Circle(20);
+            enemy.addShape(enemyShape);
+            this.world.addBody(enemy);
+
+            // Create the enemy objects graphics
+            let enemyGraphics = new PIXI.Graphics();
+            enemyGraphics.beginFill(0x38d41a);
+            enemyGraphics.drawCircle(x, y, 20);
+            enemyGraphics.endFill();
+            enemyGraphics.beginFill(0x2aff00);
+            enemyGraphics.lineStyle(1, 0x239d0b, 1);
+            enemyGraphics.drawCircle(x, y, 10);
+            enemyGraphics.endFill();
+
+            this.stage.addChild(enemyGraphics);
+
+            // Store enemies in variable to keep track of them
+            this.enemyBodies.push(enemy);
+            this.enemyGraphics.push(enemyGraphics);
+        }.bind(this));
     },
 
     /*
@@ -230,6 +284,12 @@ Game.prototype = {
             this.ship.position[1] = 0;
         if (this.ship.position[1] < 0)
             this.ship.position[1] = this._height;
+
+        // Update all of the enemy graphics objects' position
+        for (let i=0; i<this.enemyBodies.length; i++) {
+            this.enemyGraphics[i].x = this.enemyBodies[i].position[0];
+            this.enemyGraphics[i].y = this.enemyBodies[i].position[1];
+        }
 
         // Step the physics simulation forward
         this.world.step(1 / 60);
