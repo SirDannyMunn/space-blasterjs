@@ -20,6 +20,14 @@ let Game = function() {
     this.speed = 100;
     this.turnSpeed = 2;
 
+    // Setup keyboard event listeners
+    window.addEventListener('keydown', function (event) {
+        this.handleKeys(event.keyCode, true);
+    }.bind(this), false);
+    window.addEventListener('keyup', function (event) {
+        this.handleKeys(event.keyCode, false);
+    }.bind(this), false);
+
     // Start running the Game
     this.build();
 };
@@ -88,6 +96,9 @@ Game.prototype = {
         this.stage.addChild(walls);
     },
 
+    /*
+    * Create the ship to use in the game
+    */
     createShip() {  // SHIP
 
         // Create a new ship object
@@ -168,7 +179,35 @@ Game.prototype = {
     //         this.shipGraphics.x -= speed;
     // },
 
+    /*
+    * Handle keyboard input from event listeners
+    */
+    handleKeys(keyCode, state) {
+
+        // Decipher the keycode to an action
+        switch (keyCode) {
+            case 65: // A
+                this.keyLeft = state;
+                break;
+            case 68: // D
+                this.keyRight = state;
+                break;
+            case 87: //W
+                this.keyUp = state;
+                break;
+        }
+    },
+
     updatePhysics() { // GAME PHYSICS
+
+        // Move the ship by updating the "angular velocity" in the physics object
+        if (this.keyLeft) {
+            this.ship.angularVelocity = this.turnSpeed * -1;
+        } else if (this.keyRight) {
+            this.ship.angularVelocity = this.turnSpeed
+        } else /* Cancel movement */ {
+            this.ship.angularVelocity = 0;
+        }
 
         // Move ship by updating position in ship object
         this.shipGraphics.x = this.ship.position[0];

@@ -2,6 +2,7 @@
   <dictionary name="danie">
     <words>
       <w>gameloop</w>
+      <w>keycode</w>
     </words>
   </dictionary>
 </component>

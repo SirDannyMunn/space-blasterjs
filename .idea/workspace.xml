@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="46fb20c8-00ff-4c06-b311-279df96b3d7d" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/danie.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/danie.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/game.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,11 +17,12 @@
       <file leaf-file-name="game.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="411">
-              <caret line="173" column="39" selection-start-line="173" selection-start-column="39" selection-end-line="173" selection-end-column="39" />
-              <caret line="174" column="39" selection-start-line="174" selection-start-column="39" selection-end-line="174" selection-end-column="39" />
-              <caret line="175" column="46" selection-start-line="175" selection-start-column="46" selection-end-line="175" selection-end-column="46" />
+            <state relative-caret-position="238">
+              <caret line="23" column="10" selection-start-line="23" selection-start-column="10" selection-end-line="23" selection-end-column="10" />
               <folding>
+                <element signature="e#1083#1773#0" />
+                <element signature="e#1857#2312#0" />
+                <element signature="e#2332#4110#0" />
                 <element signature="e#3646#3671#0" />
                 <element signature="e#4477#4518#0" />
               </folding>
@@ -140,7 +142,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11487000" />
+    <option name="totallyTimeSpent" value="12551000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -194,6 +196,9 @@
         <state relative-caret-position="223">
           <caret line="106" column="29" lean-forward="true" selection-start-line="106" selection-start-column="29" selection-end-line="106" selection-end-column="29" />
           <folding>
+            <element signature="e#1083#1773#0" />
+            <element signature="e#1857#2312#0" />
+            <element signature="e#2332#4110#0" />
             <element signature="e#3646#3671#0" />
             <element signature="e#4477#4518#0" />
           </folding>
@@ -216,11 +221,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/game.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="173" column="39" selection-start-line="173" selection-start-column="39" selection-end-line="173" selection-end-column="39" />
-          <caret line="174" column="39" selection-start-line="174" selection-start-column="39" selection-end-line="174" selection-end-column="39" />
-          <caret line="175" column="46" selection-start-line="175" selection-start-column="46" selection-end-line="175" selection-end-column="46" />
+        <state relative-caret-position="238">
+          <caret line="23" column="10" selection-start-line="23" selection-start-column="10" selection-end-line="23" selection-end-column="10" />
           <folding>
+            <element signature="e#1083#1773#0" />
+            <element signature="e#1857#2312#0" />
+            <element signature="e#2332#4110#0" />
             <element signature="e#3646#3671#0" />
             <element signature="e#4477#4518#0" />
           </folding>
