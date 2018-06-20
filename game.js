@@ -12,13 +12,13 @@ let Game = function() {
     this.stage = new PIXI.Stage();
 
     // Setup out physics world simulation
-    this.world = new p2.World({
-        gravity: [0, 0]
-    });
+    // this.world = new p2.World({
+    //     gravity: [0, 0]
+    // });
 
     // Speed parameters for the ship
-    this.speed = 100;
-    this.turnSpeed = 2;
+    // this.speed = 100;
+    // this.turnSpeed = 2;
 
     // Start running the Game
     this.build();
@@ -91,56 +91,57 @@ Game.prototype = {
     createShip() {  // SHIP
 
         // Create a new ship object
-        this.ship = new p2.Body({
-            mass: 1,
-            angularVelocity: 0,
-            damping: 0,
-            angularDamping: 0,
-            position: [
-                Math.round(this._width / 2),
-                Math.round(this._height / 2)
-            ]
-        });
-        this.shipShape = new p2.Rectangle(52, 69);
-        this.ship.addShape(this.shipShape);
-        this.world.addBody(this.ship);
+        // this.ship = new p2.Body({
+        //     mass: 1,
+        //     angularVelocity: 0,
+        //     damping: 0,
+        //     angularDamping: 0,
+        //     position: [
+        //         Math.round(this._width / 2),
+        //         Math.round(this._height / 2)
+        //     ]
+        // });
+        // this.shipShape = new p2.Rectangle(52, 69);
+        // this.ship.addShape(this.shipShape);
+        // this.world.addBody(this.ship);
 
-        this.shipGraphics = new PIXI.Graphics();
+        // Initialise PIXI instance for the ship
+        this.ship = new PIXI.Graphics();
 
+        // Draw triangle to represent ship's body
+        this.ship.beginFill(0x20d3fe);
+        this.ship.moveTo(0, 0);
+        this.ship.lineTo(-26, 60);
+        this.ship.lineTo(26, 60);
+        this.ship.endFill();
 
-        // Draw the ship's body
-        this.shipGraphics.beginFill(0x20d3fe);
-        this.shipGraphics.moveTo(0, 0);
-        this.shipGraphics.lineTo(-26, 60);
-        this.shipGraphics.lineTo(26, 60);
-        this.shipGraphics.endFill();
+        // Draw a square to represent engine
+        this.ship.beginFill(0x1495d1);
+        this.ship.drawRect(-15, 60, 30, 8);
+        this.ship.endFill();
 
-        // Add engine
-        this.shipGraphics.beginFill(0x1495d1);
-        this.shipGraphics.drawRect(-15, 60, 30, 8);
-        this.shipGraphics.endFill();
+        // position the ship in the middle of the screen
+        this.ship.x = Math.round(this._width / 2);
+        this.ship.y = Math.round(this._height / 2);
 
         // Add the ship to the stage
-        this.stage.addChild(this.shipGraphics);
+        this.stage.addChild(this.ship);
 
-        // Set up event listeners for ship
+        // Event listeners for ship
         Mousetrap.bind('w', function() {
-           this.shipGraphics.rotation = 0;
+           this.ship.rotation = 0; // rotate ship (convert to degrees)
            this.moveShip('n');
         }.bind(this));
-
         Mousetrap.bind('s', function() {
-            this.shipGraphics.rotation = 180 * (Math.PI / 180); // rotate ship (convert to degrees)
+            this.ship.rotation = 180 * (Math.PI / 180); // rotate ship (convert to degrees)
            this.moveShip('s');
         }.bind(this));
-
         Mousetrap.bind('d', function() {
-            this.shipGraphics.rotation = 90 * (Math.PI / 180); // rotate ship (convert to degrees)
+            this.ship.rotation = 90 * (Math.PI / 180); // rotate ship (convert to degrees)
             this.moveShip('e');
         }.bind(this));
-
         Mousetrap.bind('a', function() {
-            this.shipGraphics.rotation = 270 * (Math.PI / 180); // rotate ship (convert to degrees)
+            this.ship.rotation = 270 * (Math.PI / 180); // rotate ship (convert to degrees)
             this.moveShip('w');
         }.bind(this));
     },
@@ -149,27 +150,33 @@ Game.prototype = {
 
         // Distance to move the ship
         const speed = 10;
+        
+        console.log(this.ship.x);
+        console.log(this.ship.y);
 
-        // Move ship in the desired direction
+        // Move ship in the desired direction by simply changing it's coordinates by the speed amount
         if (direction === 'n')
-            this.shipGraphics.y -= speed;
+            this.ship.y -= speed;
         if (direction === 'e')
-            this.shipGraphics.x += speed;
+            this.ship.x += speed;
         if (direction === 's')
-            this.shipGraphics.y += speed;
+            this.ship.y += speed;
         if (direction === 'w')
-            this.shipGraphics.x -= speed;
+            this.ship.x -= speed;
+
+        console.log(this.ship.x);
+        console.log(this.ship.y);
     },
 
     updatePhysics() { // GAME PHYSICS
 
         // Update the position of the graphics based on the physics of the physics simulation position
-        this.shipGraphics.x = this.ship.position[0];
-        this.shipGraphics.y = this.ship.position[1];
-        this.shipGraphics.rotation = this.ship.angle;
+        // this.ship.x = this.ship.position[0];
+        // this.ship.y = this.ship.position[1];
+        // this.ship.rotation = this.ship.angle;
 
         // Step the physics simulation forward
-        this.world.step(1 / 60);
+        // this.world.step(1 / 60);
     },
 
     /*
