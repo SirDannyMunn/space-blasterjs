@@ -17,8 +17,12 @@ let Game = function() {
     });
 
     // Speed parameters for the ship
-    this.speed = 300;
-    this.turnSpeed = 2;
+    this.speed = 500;
+    this.turnSpeed = 5;
+
+    // Speed parameters for bullets
+    this.bulletSpeed = 2000;
+    this.fired = false;
 
     // Setup keyboard event listeners
     window.addEventListener('keydown', function (event) {
@@ -31,6 +35,10 @@ let Game = function() {
     // Initialise enemy arrays
     this.enemyBodies = [];
     this.enemyGraphics = [];
+
+    // Initialise bullets
+    this.bulletBodies = [];
+    this.bulletGraphics = [];
 
     // Start running the Game
     this.build();
@@ -53,7 +61,7 @@ Game.prototype = {
         this.createShip();
 
         // Create random enemies
-        this.createEnemies();
+        // this.createEnemies();
 
         // Begin the first frame
         requestAnimationFrame(this.tick.bind(this));
@@ -104,6 +112,52 @@ Game.prototype = {
     },
 
     /*
+    * Create the ship to use in the game
+    */
+    createShip() {  // SHIP
+
+        // Physics for the ship object
+        this.ship = new p2.Body({
+            mass: 1,
+            angularVelocity: 0,
+            damping: 0,
+            angularDamping: 0,
+            position: [
+                Math.round(this._width / 2),
+                Math.round(this._height / 2)
+            ]
+        });
+        this.shipShape = new p2.Rectangle(52, 69);
+        this.ship.addShape(this.shipShape);
+        this.world.addBody(this.ship);
+
+        // Draw triangle to represent ship's body
+        this.shipGraphics = new PIXI.Graphics();
+        this.shipGraphics.beginFill(0x20d3fe);
+        this.shipGraphics.moveTo(0, 0);
+        this.shipGraphics.lineTo(-26, 60);
+        this.shipGraphics.lineTo(26, 60);
+        this.shipGraphics.endFill();
+
+        // Draw a square to represent engine
+        this.shipGraphics.beginFill(0x1495d1);
+        this.shipGraphics.drawRect(-15, 60, 30, 8);
+        this.shipGraphics.endFill();
+
+        // position the ship in the middle of the screen
+/*
+        this.shipGraphics.x = Math.round(this._width / 2);
+        this.shipGraphics.y = Math.round(this._height / 2);
+*/
+
+        // Add the ship to the stage
+        this.stage.addChild(this.shipGraphics);
+
+        // Event listeners for ship
+        // this.shipGraphicsEventListeners();
+    },
+
+    /*
     * Create enemies to fight against
     */
     createEnemies() {
@@ -151,51 +205,45 @@ Game.prototype = {
     },
 
     /*
-    * Create the ship to use in the game
+    * Create bullets for shooting
     */
-    createShip() {  // SHIP
+    createBullet() {
 
-        // Physics for the ship object
-        this.ship = new p2.Body({
-            mass: 1,
-            angularVelocity: 0,
+        this.fired = true;
+
+        // Bullet coordinates
+        const angle = this.ship.angle + Math.PI / 2;
+        this.shipAngle = this.ship.angle % (2*Math.PI);
+        const x = this.ship.position[0] + (35 * Math.sin(this.shipAngle));
+        const y = this.ship.position[1] + (- 35 * Math.cos(this.shipAngle));
+
+        let bullet = new p2.Body({
+            position: [x, y],
+            mass: 0.01,
+            angle: angle,
             damping: 0,
             angularDamping: 0,
-            position: [
-                Math.round(this._width / 2),
-                Math.round(this._height / 2)
-            ]
+            force: [
+                - this.bulletSpeed * Math.cos(angle),
+                - this.bulletSpeed * Math.sin(angle),
+            ],
         });
-        this.shipShape = new p2.Rectangle(52, 69);
-        this.ship.addShape(this.shipShape);
-        this.world.addBody(this.ship);
 
-        // Initialise PIXI instance for the ship
-        this.shipGraphics = new PIXI.Graphics();
+        const bulletShape = new p2.Box(1, 5);
+        bullet.addShape(bulletShape);
+        this.world.addBody(bullet);
 
-        // Draw triangle to represent ship's body
-        this.shipGraphics.beginFill(0x20d3fe);
-        this.shipGraphics.moveTo(0, 0);
-        this.shipGraphics.lineTo(-26, 60);
-        this.shipGraphics.lineTo(26, 60);
-        this.shipGraphics.endFill();
+        let bulletGraphics = new PIXI.Graphics();
+        bulletGraphics.beginFill(0x38d41a);
+        bulletGraphics.drawRect(0, 0, 4, 15);
+        bulletGraphics.endFill();
+        bulletGraphics.rotation = this.shipAngle;
 
-        // Draw a square to represent engine
-        this.shipGraphics.beginFill(0x1495d1);
-        this.shipGraphics.drawRect(-15, 60, 30, 8);
-        this.shipGraphics.endFill();
+        this.stage.addChild(bulletGraphics);
 
-        // position the ship in the middle of the screen
-/*
-        this.shipGraphics.x = Math.round(this._width / 2);
-        this.shipGraphics.y = Math.round(this._height / 2);
-*/
-
-        // Add the ship to the stage
-        this.stage.addChild(this.shipGraphics);
-
-        // Event listeners for ship
-        // this.shipGraphicsEventListeners();
+        // Store bullets in an array to keep track of them
+        this.bulletBodies.push(bullet);
+        this.bulletGraphics.push(bulletGraphics);
     },
 
     // shipEventListeners() {
@@ -249,9 +297,15 @@ Game.prototype = {
             case 87: // W
                 this.keyUp = state;
                 break;
+            case 32: // SPACE BAR
+                this.shoot = state;
+                break;
         }
     },
 
+    /*
+    * Update physics to keep realtime
+    */
     updatePhysics() { // GAME PHYSICS
 
         // Rotate the ship by updating the "angular velocity" in the physics object
@@ -285,10 +339,22 @@ Game.prototype = {
         if (this.ship.position[1] < 0)
             this.ship.position[1] = this._height;
 
+        // Create bullet object
+        if (this.shoot)
+            (!this.fired) ? this.createBullet() : null;
+        if (!this.shoot)
+            (this.fired) ? this.fired = false : null;
+
         // Update all of the enemy graphics objects' position
         for (let i=0; i<this.enemyBodies.length; i++) {
             this.enemyGraphics[i].x = this.enemyBodies[i].position[0];
             this.enemyGraphics[i].y = this.enemyBodies[i].position[1];
+        }
+
+        // Update all of the bullet bodies position
+        for (let i=0; i<this.bulletBodies.length; i++) {
+            this.bulletGraphics[i].x = this.bulletBodies[i].position[0];
+            this.bulletGraphics[i].y = this.bulletBodies[i].position[1];
         }
 
         // Step the physics simulation forward
