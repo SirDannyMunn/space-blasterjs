@@ -1,3 +1,9 @@
+/* Ideas
+*
+*  Teleporting portals
+*
+*/
+
 let Game = function() {
 
     // See the width and height of the screen
@@ -17,8 +23,8 @@ let Game = function() {
     });
 
     // Speed parameters for the ship
-    this.speed = 500;
-    this.turnSpeed = 5;
+    this.speed = 750;
+    this.turnSpeed = 10;
 
     // Speed parameters for bullets
     this.bulletSpeed = 2000;
@@ -35,6 +41,7 @@ let Game = function() {
     // Initialise enemy arrays
     this.enemyBodies = [];
     this.enemyGraphics = [];
+    this.removeObjs = [];
 
     // Initialise bullets
     this.bulletBodies = [];
@@ -61,7 +68,7 @@ Game.prototype = {
         this.createShip();
 
         // Create random enemies
-        // this.createEnemies();
+        this.createEnemies();
 
         // Begin the first frame
         requestAnimationFrame(this.tick.bind(this));
@@ -182,18 +189,19 @@ Game.prototype = {
                 angularVelocity: va
             });
 
-            const enemyShape = new p2.Circle(20);
+            let enemyShape = new p2.Circle(20);
+            enemyShape.sensor = true;
             enemy.addShape(enemyShape);
             this.world.addBody(enemy);
 
             // Create the enemy objects graphics
             let enemyGraphics = new PIXI.Graphics();
             enemyGraphics.beginFill(0x38d41a);
-            enemyGraphics.drawCircle(x, y, 20);
+            enemyGraphics.drawCircle(0, 0, 20);
             enemyGraphics.endFill();
             enemyGraphics.beginFill(0x2aff00);
             enemyGraphics.lineStyle(1, 0x239d0b, 1);
-            enemyGraphics.drawCircle(x, y, 10);
+            enemyGraphics.drawCircle(0, 0, 10);
             enemyGraphics.endFill();
 
             this.stage.addChild(enemyGraphics);
@@ -201,6 +209,12 @@ Game.prototype = {
             // Store enemies in variable to keep track of them
             this.enemyBodies.push(enemy);
             this.enemyGraphics.push(enemyGraphics);
+        }.bind(this), 1000);
+
+        this.world.on('beginContact', function(event) {
+            if (event.bodyB.id === this.ship.id) {
+                this.removeObjs.push(event.bodyA);
+            }
         }.bind(this));
     },
 
@@ -359,6 +373,20 @@ Game.prototype = {
 
         // Step the physics simulation forward
         this.world.step(1 / 60);
+
+        // Remove all objects from remove objects array
+        for (let i=0; 1<this.removeObjs.length; i++) {
+            this.world.removeBody(this.removeObjs[i]);
+
+            // Remove element from screen and arrays
+            let index = this.enemyBodies.indexOf(this.removeObjs[i]);
+            if (index) {
+                this.enemyBodies.splice(index, 1);
+                this.stage.removeChild(this.enemyGraphics[index]);
+                this.enemyGraphics.splice(index, 1);
+            }
+        }
+        this.removeObjs.length = 0;
     },
 
     /*
