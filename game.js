@@ -337,7 +337,8 @@ Game.prototype = {
     */
     updatePhysics() { // GAME PHYSICS
 
-        const angle = this.ship.angle + Math.PI / 2;
+        const angle = Math.PI / 2;
+        const directionSpeed = this.speed * Math.sin(angle);
 
         // Move the ship by updating the "force vector" in the ship's physics object
         if (this.keyLeft) {
