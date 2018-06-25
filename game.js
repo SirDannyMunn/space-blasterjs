@@ -375,7 +375,7 @@ Game.prototype = {
         this.world.step(1 / 60);
 
         // Remove all objects from remove objects array
-        for (let i=0; 1<this.removeObjs.length; i++) {
+        for (let i=0; i<this.removeObjs.length; i++) {
             this.world.removeBody(this.removeObjs[i]);
 
             // Remove element from screen and arrays
@@ -386,6 +386,7 @@ Game.prototype = {
                 this.enemyGraphics.splice(index, 1);
             }
         }
+
         this.removeObjs.length = 0;
     },
 
