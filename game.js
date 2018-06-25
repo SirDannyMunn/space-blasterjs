@@ -1,6 +1,7 @@
 /* Ideas
 *
 *  Teleporting portals
+*  More points you get faster you can go
 *
 */
 
@@ -322,6 +323,9 @@ Game.prototype = {
             case 87: // W
                 this.keyUp = state;
                 break;
+            case 83: // S
+                this.keyDown = state;
+                break;
             case 32: // SPACE BAR
                 this.shoot = state;
                 break;
@@ -333,20 +337,20 @@ Game.prototype = {
     */
     updatePhysics() { // GAME PHYSICS
 
-        // Rotate the ship by updating the "angular velocity" in the physics object
-        if (this.keyLeft) {
-            this.ship.angularVelocity = this.turnSpeed * -1;
-        } else if (this.keyRight) {
-            this.ship.angularVelocity = this.turnSpeed
-        } else /* Cancel movement */ {
-            this.ship.angularVelocity = 0;
-        }
+        const angle = this.ship.angle + Math.PI / 2;
 
         // Move the ship by updating the "force vector" in the ship's physics object
+        if (this.keyLeft) {
+            this.ship.force[0] -= this.speed * Math.sin(angle);
+        }
+        if (this.keyRight) {
+            this.ship.force[0] += this.speed * Math.sin(angle);
+        }
         if (this.keyUp) {
-            const angle = this.ship.angle + Math.PI / 2;
-            this.ship.force[0] -= this.speed * Math.cos(angle);
             this.ship.force[1] -= this.speed * Math.sin(angle);
+        }
+        if (this.keyDown) {
+            this.ship.force[1] += this.speed * Math.sin(angle);
         }
 
         // Move ship graphic by updating it's coordinates to the position in the ship object
