@@ -8,8 +8,8 @@
 let Game = function() {
 
     // See the width and height of the screen
-    this._width = 1750;
-    this._height = 900;
+    this._width = window.innerWidth;
+    this._height = window.innerHeight;
 
     // Setup the background renderer
     this.bgRenderer = new PIXI.CanvasRenderer(this._width, this._height);
@@ -45,6 +45,13 @@ let Game = function() {
     window.addEventListener('keyup', function (event) {
         this.handleKeys(event.keyCode, false);
     }.bind(this), false);
+    // Setup mouse event listeners
+    window.addEventListener('mousemove', function(event) {
+        this.handleMouseMove(event);
+    }.bind(this));
+    window.addEventListener('click', function(event) {
+        this.handleMouseClick(event);
+    }.bind(this));
 
     // Initialise enemy arrays
     this.enemyBodies = [];
@@ -163,17 +170,8 @@ Game.prototype = {
         this.shipGraphics.drawRect(-15, 60, 30, 8);
         this.shipGraphics.endFill();
 
-        // position the ship in the middle of the screen
-/*
-        this.shipGraphics.x = Math.round(this._width / 2);
-        this.shipGraphics.y = Math.round(this._height / 2);
-*/
-
         // Add the ship to the stage
         this.stage.addChild(this.shipGraphics);
-
-        // Event listeners for ship
-        // this.shipGraphicsEventListeners();
     },
 
     /*
@@ -333,6 +331,27 @@ Game.prototype = {
     },
 
     /*
+    * Handle mouse movements
+    */
+    handleMouseMove(event) {
+        const cx = this.ship.position[0];
+        const cy = this.ship.position[1];
+        const x2 = event.clientX;
+        const y2 = event.clientY;
+        const deltaX = x2 - cx;
+        const deltaY = y2 - cy;
+
+        const degrees = Math.atan2(deltaY, deltaX); // In radians
+
+        this.ship.angle = degrees + Math.PI / 2;
+    },
+
+    handleMouseClick(event) {
+
+    },
+
+
+    /*
     * Update physics to keep realtime
     */
     updatePhysics() { // GAME PHYSICS
@@ -342,17 +361,19 @@ Game.prototype = {
 
         // Move the ship by updating the "force vector" in the ship's physics object
         if (this.keyLeft) {
-            this.ship.force[0] -= this.speed * Math.sin(angle);
+            this.ship.force[0] -= directionSpeed;
         }
         if (this.keyRight) {
-            this.ship.force[0] += this.speed * Math.sin(angle);
+            this.ship.force[0] += directionSpeed;
         }
         if (this.keyUp) {
-            this.ship.force[1] -= this.speed * Math.sin(angle);
+            this.ship.force[1] -= directionSpeed;
         }
         if (this.keyDown) {
-            this.ship.force[1] += this.speed * Math.sin(angle);
+            this.ship.force[1] += directionSpeed;
         }
+
+        // console.log(this.ship.angle);
 
         // Move ship graphic by updating it's coordinates to the position in the ship object
         this.shipGraphics.x = this.ship.position[0];
