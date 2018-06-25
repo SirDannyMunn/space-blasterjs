@@ -10,8 +10,15 @@ let Game = function() {
     this._width = 1750;
     this._height = 900;
 
+    // Setup the background renderer
+    this.bgRenderer = new PIXI.CanvasRenderer(this._width, this._height);
+    document.body.appendChild(this.bgRenderer.view);
+
+    // Create the background stage to draw on
+    this.bgStage = new PIXI.Stage();
+
     // Setup the rendering surface
-    this.renderer = new PIXI.CanvasRenderer(this._width, this._height);
+    this.renderer = new PIXI.CanvasRenderer(this._width, this._height, {transparent:true}); // Set to transparent
     document.body.appendChild(this.renderer.view);
 
     // Create the main stage to draw on
@@ -97,8 +104,10 @@ Game.prototype = {
             star.endFill();
 
             // Attach the star to the stage
-            this.stage.addChild(star);
+            this.bgStage.addChild(star);
         }
+
+        this.bgRenderer.render(this.bgStage)
     },
 
     /*
@@ -115,7 +124,9 @@ Game.prototype = {
         walls.drawRect(0, 10, 10, this._height-20);
 
         // Attach the walls to the stage
-        this.stage.addChild(walls);
+        this.bgStage.addChild(walls);
+
+        this.bgRenderer.render(this.bgStage)
     },
 
     /*
