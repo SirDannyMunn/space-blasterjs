@@ -2,6 +2,7 @@
 *
 *  Teleporting portals
 *  More points you get faster you can go
+*  Additional ships with more points
 *
 */
 
@@ -31,7 +32,7 @@ let Game = function() {
     });
 
     // Speed parameters for the ship
-    this.speed = 750;
+    this.speed = 250;
     this.turnSpeed = 10;
 
     // Speed parameters for bullets
@@ -153,25 +154,53 @@ Game.prototype = {
                 Math.round(this._height / 2)
             ]
         });
-        this.shipShape = new p2.Rectangle(52, 69);
+        this.shipShape = new p2.Circle(52, 69);
         this.ship.addShape(this.shipShape);
         this.world.addBody(this.ship);
 
         // Draw triangle to represent ship's body
-        this.shipGraphics = new PIXI.Graphics();
-        this.shipGraphics.beginFill(0x20d3fe);
-        this.shipGraphics.moveTo(0, 0);
-        this.shipGraphics.lineTo(-26, 60);
-        this.shipGraphics.lineTo(26, 60);
-        this.shipGraphics.endFill();
+        let shipGraphics = new PIXI.Graphics();
+        shipGraphics.beginFill(0x20d3fe);
+        shipGraphics.moveTo(0, 0);
+        shipGraphics.lineTo(-26, 80);
+        shipGraphics.lineTo(26, 80);
+        shipGraphics.endFill();
 
         // Draw a square to represent engine
-        this.shipGraphics.beginFill(0x1495d1);
-        this.shipGraphics.drawRect(-15, 60, 30, 8);
-        this.shipGraphics.endFill();
+        shipGraphics.beginFill(0x1495d1);
+        shipGraphics.drawRect(-15, 60, 38, 8);
+        shipGraphics.endFill();
+
+        // Cache the ship to only use one draw cycle per tick
+        let shipCache = new PIXI.CanvasRenderer({width: 104, height: 69, transparent:false, backgroundColor: 0x38d41a});
+        shipCache.screen.x = 260;
+        shipCache.screen.y = 260;
+        let shipCacheStage = new PIXI.Stage();
+        shipCacheStage.addChild(shipGraphics);
+        shipCache.render(shipCacheStage);
+        shipCache.view.setAttribute('style', 'padding: 500px;');
+        console.log(shipCache);
+        let shipTexture = PIXI.Texture.fromCanvas(shipCache.view);
+        this.shipGraphics = new PIXI.Sprite(shipTexture);
 
         // Add the ship to the stage
         this.stage.addChild(this.shipGraphics);
+    },
+
+    /*
+    * Handle mouse movements
+    */
+    handleMouseMove(event) {
+        const cx = this.ship.position[0];
+        const cy = this.ship.position[1];
+        const x2 = event.clientX;
+        const y2 = event.clientY;
+        const deltaX = x2 - cx;
+        const deltaY = y2 - cy;
+
+        const degrees = Math.atan2(deltaY, deltaX); // In radians
+
+        this.ship.angle = degrees + Math.PI / 2;
     },
 
     /*
@@ -185,9 +214,9 @@ Game.prototype = {
             // Random physics properties for enemy ships
             const x = Math.round(Math.random() * this._width);
             const y = Math.round(Math.random() * this._height);
-            const vx = (Math.random() - 0.5) * this.speed;
-            const vy = (Math.random() - 0.5) * this.speed;
-            const va = (Math.random() - 0.5) * this.speed;
+            const vx = (Math.random() - 0.5) * this.speed / 2;
+            const vy = (Math.random() - 0.5) * this.speed / 2;
+            const va = (Math.random() - 0.5) * this.speed / 2;
 
             // Create the enemies physics body
             let enemy = new p2.Body({
@@ -222,6 +251,7 @@ Game.prototype = {
         }.bind(this), 1000);
 
         this.world.on('beginContact', function(event) {
+            // console.log(event);
             if (event.bodyB.id === this.ship.id) {
                 this.removeObjs.push(event.bodyA);
             }
@@ -232,8 +262,6 @@ Game.prototype = {
     * Create bullets for shooting
     */
     createBullet() {
-
-        this.fired = true;
 
         // Bullet coordinates
         const angle = this.ship.angle + Math.PI / 2;
@@ -270,41 +298,6 @@ Game.prototype = {
         this.bulletGraphics.push(bulletGraphics);
     },
 
-    // shipEventListeners() {
-    //     Mousetrap.bind('w', function() {
-    //         // this.shipGraphics.rotation = 0; // rotate ship (convert to degrees)
-    //         this.moveShip('n');
-    //     }.bind(this));
-    //     Mousetrap.bind('s', function() {
-    //         // this.shipGraphics.rotation = 180 * (Math.PI / 180); // rotate ship (convert to degrees)
-    //         this.moveShip('s');
-    //     }.bind(this));
-    //     Mousetrap.bind('d', function() {
-    //         // this.shipGraphics.rotation = 90 * (Math.PI / 180); // rotate ship (convert to degrees)
-    //         this.moveShip('e');
-    //     }.bind(this));
-    //     Mousetrap.bind('a', function() {
-    //         // this.shipGraphics.rotation = 270 * (Math.PI / 180); // rotate ship (convert to degrees)
-    //         this.moveShip('w');
-    //     }.bind(this));
-    // },
-
-    // moveShip(direction) { // SHIP MOVEMENT
-    //
-    //     // Distance to move the ship
-    //     const speed = 10;
-    //
-    //     // Move ship in the desired direction by simply changing it's coordinates by the speed amount
-    //     if (direction === 'n')
-    //         this.shipGraphics.y -= speed;
-    //     if (direction === 'e')
-    //         this.shipGraphics.x += speed;
-    //     if (direction === 's')
-    //         this.shipGraphics.y += speed;
-    //     if (direction === 'w')
-    //         this.shipGraphics.x -= speed;
-    // },
-
     /*
     * Handle keyboard input from event listeners
     */
@@ -324,32 +317,12 @@ Game.prototype = {
             case 83: // S
                 this.keyDown = state;
                 break;
-            case 32: // SPACE BAR
-                this.shoot = state;
-                break;
         }
     },
 
-    /*
-    * Handle mouse movements
-    */
-    handleMouseMove(event) {
-        const cx = this.ship.position[0];
-        const cy = this.ship.position[1];
-        const x2 = event.clientX;
-        const y2 = event.clientY;
-        const deltaX = x2 - cx;
-        const deltaY = y2 - cy;
-
-        const degrees = Math.atan2(deltaY, deltaX); // In radians
-
-        this.ship.angle = degrees + Math.PI / 2;
+    handleMouseClick() {
+        this.createBullet();
     },
-
-    handleMouseClick(event) {
-
-    },
-
 
     /*
     * Update physics to keep realtime
@@ -373,8 +346,6 @@ Game.prototype = {
             this.ship.force[1] += directionSpeed;
         }
 
-        // console.log(this.ship.angle);
-
         // Move ship graphic by updating it's coordinates to the position in the ship object
         this.shipGraphics.x = this.ship.position[0];
         this.shipGraphics.y = this.ship.position[1];
@@ -389,12 +360,6 @@ Game.prototype = {
             this.ship.position[1] = 0;
         if (this.ship.position[1] < 0)
             this.ship.position[1] = this._height;
-
-        // Create bullet object
-        if (this.shoot)
-            (!this.fired) ? this.createBullet() : null;
-        if (!this.shoot)
-            (this.fired) ? this.fired = false : null;
 
         // Update all of the enemy graphics objects' position
         for (let i=0; i<this.enemyBodies.length; i++) {
