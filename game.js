@@ -3,6 +3,7 @@
 *  Teleporting portals
 *  More points you get faster you can go
 *  Additional ships with more points
+*  Movement energy runs out
 *
 */
 
@@ -172,14 +173,11 @@ Game.prototype = {
         shipGraphics.endFill();
 
         // Cache the ship to only use one draw cycle per tick
-        let shipCache = new PIXI.CanvasRenderer({width: 104, height: 69, transparent:false, backgroundColor: 0x38d41a});
-        shipCache.screen.x = 260;
-        shipCache.screen.y = 260;
+        let shipCache = new PIXI.CanvasRenderer({width: 52, height: 69, transparent:false, backgroundColor: 0x38d41a});
         let shipCacheStage = new PIXI.Stage();
         shipCacheStage.addChild(shipGraphics);
         shipCache.render(shipCacheStage);
         shipCache.view.setAttribute('style', 'padding: 500px;');
-        console.log(shipCache);
         let shipTexture = PIXI.Texture.fromCanvas(shipCache.view);
         this.shipGraphics = new PIXI.Sprite(shipTexture);
 
