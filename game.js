@@ -178,9 +178,14 @@ Game.prototype = {
         shipCacheStage.addChild(shipGraphics);
         shipCache.render(shipCacheStage);
         shipCache.view.setAttribute('style', 'padding: 500px;');
+//         let shipCache = new PIXI.CanvasRenderer({width: 104, height: 69, transparent:false, backgroundColor: 0x38d41a});
+//         let shipCacheStage = new PIXI.Stage();
+//         shipCacheStage.addChild(shipGraphics);
+//         shipCache.render(shipCacheStage);
         let shipTexture = PIXI.Texture.fromCanvas(shipCache.view);
         this.shipGraphics = new PIXI.Sprite(shipTexture);
 
+        console.log(shipCache);
         // Add the ship to the stage
         this.stage.addChild(this.shipGraphics);
     },
@@ -250,6 +255,8 @@ Game.prototype = {
 
         this.world.on('beginContact', function(event) {
             // console.log(event);
+            // if (this.bodyB.id in this.bulletBodies)
+
             if (event.bodyB.id === this.ship.id) {
                 this.removeObjs.push(event.bodyA);
             }
@@ -294,6 +301,8 @@ Game.prototype = {
         // Store bullets in an array to keep track of them
         this.bulletBodies.push(bullet);
         this.bulletGraphics.push(bulletGraphics);
+
+        window.bullets = this.bulletBodies;
     },
 
     /*
@@ -385,6 +394,15 @@ Game.prototype = {
                 this.stage.removeChild(this.enemyGraphics[index]);
                 this.enemyGraphics.splice(index, 1);
             }
+        }
+
+        // Remove bullets gone off the screen
+        for (let i=0; i<this.bulletBodies.length; i++) {
+            const bullet = this.bulletBodies[i];
+            if (bullet.position[0] > this._width || bullet.position[0] < 0)
+                this.bulletBodies.splice(this.bulletBodies.indexOf(bullet), 1);
+            if (bullet.position[1] > this._height || bullet.position[1] < 0)
+                this.bulletBodies.splice(this.bulletBodies.indexOf(bullet), 1);
         }
 
         this.removeObjs.length = 0;
